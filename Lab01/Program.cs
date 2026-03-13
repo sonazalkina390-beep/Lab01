@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 // Перевод скорости и вычисление пути
 namespace Lab01
 {
@@ -28,7 +28,7 @@ namespace Lab01
                 {
                     Console.WriteLine("Ошибка: введите число (0, 1, 2 или 3).");
                     Console.WriteLine();
-                    continue; // Переход к следующей итерации цикла
+                    continue; // Переход к следации цикла
                 }
 
                 // Проверка диапазона выбора
@@ -60,14 +60,14 @@ namespace Lab01
 
             // Задержка перед закрытием
             Console.Write("Нажмите любую клавишу для выхода...");
-            Console.ReadKey(); // Ожидание нажатия клавиши
+            Console.ReadKey(); // Ожидание нажатши
         }
 
         // Метод для задачи 1: перевод скорости из км/ч в м/с
         static void Task1()
         {
             Console.WriteLine("--- Задача 1: Перевод скорости из км/ч в м/с ---");
-            double speedKmh = GetPositiveDouble("Введите скорость в км/ч: "); // Ввод положительного числа
+            double speedKmh = GetPositiveDoubleWithLimit("Введите скорость в км/ч: ", 100000); // Ввод положительного числа
 
             // Формула: v(м/с) = v(км/ч) / 3.6
             double speedMs = speedKmh / 3.6; // Преобразование скорости
@@ -79,7 +79,7 @@ namespace Lab01
         static void Task2()
         {
             Console.WriteLine("--- Задача 2: Перевод скорости из м/с в км/ч ---");
-            double speedMsInput = GetPositiveDouble("Введите скорость в м/с: "); // Ввод положительного числа
+            double speedMsInput = GetPositiveDoubleWithLimit("Введите скорость в м/с: ", 100000); // Ввод положительного числа
 
             // Формула: v(км/ч) = v(м/с) × 3.6
             double speedKmhOutput = speedMsInput * 3.6; // Преобразование скорости
@@ -91,8 +91,8 @@ namespace Lab01
         static void Task3()
         {
             Console.WriteLine("--- Задача 3: Вычисление пути ---");
-            double v = GetPositiveDouble("Введите скорость v (в км/ч): "); // Ввод положительного числа
-            double t = GetPositiveDouble("Введите время t (в часах): "); // Ввод положительного числа
+            double v = GetPositiveDoubleWithLimit("Введите скорость v (в км/ч): ", 100000); // Ввод положительного числа
+            double t = GetPositiveDoubleWithLimit("Введите время t (в часах): ", 100000); // Ввод положительного числа
 
             // Формулы: S(км) = v*t, S(м) = S(км) * 1000
             double distanceKm = v * t; // Путь в км
@@ -119,13 +119,57 @@ namespace Lab01
                     continue; // Повтор ввода
                 }
 
-                // Попытка преобразовать строку в число
+                // Попытка пре в число
                 if (double.TryParse(input, out value)) // Проверка корректности числового формата
                 {
                     // Проверка, является ли число положительным
                     if (value >= 0) // Проверка неотрицательного значения
                     {
                         return value; // Возвращаем положительное число
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: введите неотрицательное число.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: введите корректное число.");
+                }
+            }
+        }
+
+        // Метод для получения положительного вещественного числа от пользователя с проверкой и ограничением
+        static double GetPositiveDoubleWithLimit(string prompt, double maxValue)
+        {
+            double value;
+            while (true) // Цикл до получения корректного ввода
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine(); // Чтение строки ввода
+
+                // Проверка на пустую строку или null
+                if (string.IsNullOrWhiteSpace(input)) // Проверка пустого ввода
+                {
+                    Console.WriteLine("Ошибка: введена пустая строка. Введите число.");
+                    continue; // Повтор ввода
+                }
+
+                // Попытка преобразовать строку в число
+                if (double.TryParse(input, out value)) // Проверка корректности числового формата
+                {
+                    // Проверка, является ли число положительным
+                    if (value >= 0) // Проверка неотрицательного значения
+                    {
+                        // Проверка, не превышает ли значение максимальное допустимое
+                        if (value <= maxValue) // Проверка ограничения на максимальное значение
+                        {
+                            return value; // Возвращаем положительное число в пределах ограничения
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Ошибка: введенное число превышает максимально допустимое значение {maxValue}.");
+                        }
                     }
                     else
                     {
